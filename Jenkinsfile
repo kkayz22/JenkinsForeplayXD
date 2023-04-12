@@ -4,6 +4,12 @@ pipeline {
         stage('build') {
             steps {
                 sh 'python --version'
+                sh 'python main.py'
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'python main.test.py'
             }
         }
     }
