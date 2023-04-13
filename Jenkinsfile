@@ -1,15 +1,22 @@
 pipeline {
-    agent { docker { image 'python:3.10.7-alpine' } }
+    agent any
+
     stages {
-        stage('build') {
+        stage('Checkout') {
             steps {
-                sh 'python --version'
-                sh 'python main.py'
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], extensions: [], 
+                userRemoteConfigs: [[url: 'https://github.com/kkayz22/JenkinsForeplayXD.git']]])
             }
         }
-        stage('test') {
+        stage('Build') {
             steps {
-                sh 'python main.test.py'
+                git branch: 'main', url: 'https://github.com/kkayz22/JenkinsForeplayXD.git'
+                sh 'python3 main.py'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'python3 -m main.test.py'
             }
         }
     }
